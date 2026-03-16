@@ -1,0 +1,212 @@
+"use client";
+
+/**
+ * Dashboard page: KPI stat boxes, revenue line chart, transactions list,
+ * campaign progress, bar chart, and geography chart.
+ */
+import { useRef, useState, useEffect, useContext } from "react";
+import { Box, Button, IconButton, Typography } from "@mui/material";
+import { SidebarContext } from "@/context/SidebarContext";
+import Header from "@/components/Header";
+import StatBox from "@/components/StatBox";
+import ProgressCircle from "@/components/ProgressCircle";
+import LineChart from "@/components/LineChart";
+import BarChart from "@/components/BarChart";
+import GeographyChart from "@/components/GeographyChart";
+import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
+import EmailIcon from "@mui/icons-material/Email";
+import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import TrafficIcon from "@mui/icons-material/Traffic";
+import { mockTransactions } from "@/data/mockData";
+
+export default function Dashboard() {
+  const { isCollapsed } = useContext(SidebarContext);
+  const lineRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLDivElement>(null);
+  const geoRef = useRef<HTMLDivElement>(null);
+  const [lineReady, setLineReady] = useState(false);
+  const [barReady, setBarReady] = useState(false);
+  const [geoReady, setGeoReady] = useState(false);
+  const [sidebarTransitioning, setSidebarTransitioning] = useState(false);
+
+  useEffect(() => {
+    const sidebar = document.querySelector(".pro-sidebar");
+    if (!sidebar) return;
+    const handleTransitionStart = () => setSidebarTransitioning(true);
+    const handleTransitionEnd = () => setSidebarTransitioning(false);
+    sidebar.addEventListener("transitionstart", handleTransitionStart);
+    sidebar.addEventListener("transitionend", handleTransitionEnd);
+    if (getComputedStyle(sidebar).transitionDuration === "0s") {
+      queueMicrotask(() => setSidebarTransitioning(false));
+    }
+    return () => {
+      sidebar.removeEventListener("transitionstart", handleTransitionStart);
+      sidebar.removeEventListener("transitionend", handleTransitionEnd);
+    };
+  }, [isCollapsed]);
+
+  useEffect(() => {
+    const checkSize = (
+      ref: React.RefObject<HTMLDivElement>,
+      setReady: (v: boolean) => void
+    ) => {
+      if (ref.current) {
+        const { width, height } = ref.current.getBoundingClientRect();
+        setReady(width > 0 && height > 0);
+      }
+    };
+    const handleResize = () => {
+      checkSize(lineRef, setLineReady);
+      checkSize(barRef, setBarReady);
+      checkSize(geoRef, setGeoReady);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [isCollapsed]);
+
+  return (
+    <Box className="m-5">
+      <Box className="flex justify-between items-center">
+        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+        <Box>
+          <Button className="bg-token-blueAccent-700 text-token-grey-100 text-sm font-bold py-2.5 px-5">
+            <DownloadOutlinedIcon className="mr-2.5" />
+            Download Reports
+          </Button>
+        </Box>
+      </Box>
+
+      <Box className="grid grid-cols-12 auto-rows-[140px] gap-5">
+        <Box className="col-span-3 flex items-center justify-center bg-token-primary-400">
+          <StatBox
+            title="12,361"
+            subtitle="Emails Sent"
+            progress="0.75"
+            increase="+14%"
+            icon={<EmailIcon className="text-token-greenAccent-600 text-[26px]" />}
+          />
+        </Box>
+        <Box className="col-span-3 flex items-center justify-center bg-token-primary-400">
+          <StatBox
+            title="431,225"
+            subtitle="Sales Obtained"
+            progress="0.50"
+            increase="+21%"
+            icon={<PointOfSaleIcon className="text-token-greenAccent-600 text-[26px]" />}
+          />
+        </Box>
+        <Box className="col-span-3 flex items-center justify-center bg-token-primary-400">
+          <StatBox
+            title="32,441"
+            subtitle="New Clients"
+            progress="0.30"
+            increase="+5%"
+            icon={<PersonAddIcon className="text-token-greenAccent-600 text-[26px]" />}
+          />
+        </Box>
+        <Box className="col-span-3 flex items-center justify-center bg-token-primary-400">
+          <StatBox
+            title="1,325,134"
+            subtitle="Traffic Received"
+            progress="0.80"
+            increase="+43%"
+            icon={<TrafficIcon className="text-token-greenAccent-600 text-[26px]" />}
+          />
+        </Box>
+
+        <Box className="col-span-8 row-span-2 bg-token-primary-400">
+          <Box className="mt-6 px-[30px] flex justify-between items-center">
+            <Box>
+              <Typography variant="h5" className="font-semibold text-token-grey-100">
+                Revenue Generated
+              </Typography>
+              <Typography variant="h3" className="font-bold text-token-greenAccent-500">
+                $59,342.32
+              </Typography>
+            </Box>
+            <Box>
+              <IconButton>
+                <DownloadOutlinedIcon className="text-[26px] text-token-greenAccent-500" />
+              </IconButton>
+            </Box>
+          </Box>
+          <Box className="h-[250px] -mt-5" ref={lineRef}>
+            {lineReady && !sidebarTransitioning && (
+              <LineChart
+                isDashboard={true}
+                key={isCollapsed ? "collapsed" : "expanded"}
+              />
+            )}
+          </Box>
+        </Box>
+        <Box className="col-span-4 row-span-2 bg-token-primary-400 overflow-auto">
+          <Box className="flex justify-between items-center border-b-4 border-token-primary-500 p-4">
+            <Typography variant="h5" className="font-semibold text-token-grey-100">
+              Recent Transactions
+            </Typography>
+          </Box>
+          {mockTransactions.map((transaction, i) => (
+            <Box
+              key={`${transaction.txId}-${i}`}
+              className="flex justify-between items-center border-b-4 border-token-primary-500 p-4"
+            >
+              <Box>
+                <Typography variant="h5" className="font-semibold text-token-greenAccent-500">
+                  {transaction.txId}
+                </Typography>
+                <Typography className="text-token-grey-100">
+                  {transaction.user}
+                </Typography>
+              </Box>
+              <Box className="text-token-grey-100">{transaction.date}</Box>
+              <Box className="bg-token-greenAccent-500 py-1.5 px-2.5 rounded">
+                ${transaction.cost}
+              </Box>
+            </Box>
+          ))}
+        </Box>
+
+        <Box className="col-span-4 row-span-2 bg-token-primary-400 p-[30px]">
+          <Typography variant="h5" className="font-semibold">
+            Campaign
+          </Typography>
+          <Box className="flex flex-col items-center mt-6">
+            <ProgressCircle size="125" />
+            <Typography variant="h5" className="text-token-greenAccent-500 mt-4">
+              $48,352 revenue generated
+            </Typography>
+            <Typography>Includes extra misc expenditures and costs</Typography>
+          </Box>
+        </Box>
+        <Box className="col-span-4 row-span-2 bg-token-primary-400">
+          <Typography variant="h5" className="font-semibold pt-[30px] px-[30px]">
+            Sales Quantity
+          </Typography>
+          <Box className="h-[250px] -mt-5" ref={barRef}>
+            {barReady && !sidebarTransitioning && (
+              <BarChart
+                isDashboard={true}
+                key={isCollapsed ? "collapsed" : "expanded"}
+              />
+            )}
+          </Box>
+        </Box>
+        <Box className="col-span-4 row-span-2 p-[30px] bg-token-primary-400">
+          <Typography variant="h5" className="font-semibold mb-4">
+            Geography Based Traffic
+          </Typography>
+          <Box className="h-[200px]" ref={geoRef}>
+            {geoReady && !sidebarTransitioning && (
+              <GeographyChart
+                isDashboard={true}
+                key={isCollapsed ? "collapsed" : "expanded"}
+              />
+            )}
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
+}

@@ -1,0 +1,88 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@layer base {
+  :root {
+    --token-grey-100: #141414;
+    --token-grey-200: #292929;
+    --token-grey-300: #3d3d3d;
+    --token-grey-400: #525252;
+    --token-grey-500: #666666;
+    --token-grey-600: #858585;
+    --token-grey-700: #a3a3a3;
+    --token-grey-800: #c2c2c2;
+    --token-grey-900: #e0e0e0;
+    --token-primary-100: #040509;
+    --token-primary-200: #080b12;
+    --token-primary-300: #0c101b;
+    --token-primary-400: #f2f0f0;
+    --token-primary-500: #141b2d;
+    --token-primary-600: #1f2a40;
+    --token-primary-700: #727681;
+    --token-primary-800: #a1a4ab;
+    --token-primary-900: #d0d1d5;
+    --token-greenAccent-100: #0f2922;
+    --token-greenAccent-200: #1e5245;
+    --token-greenAccent-300: #2e7c67;
+    --token-greenAccent-400: #3da58a;
+    --token-greenAccent-500: #4cceac;
+    --token-greenAccent-600: #70d8bd;
+    --token-greenAccent-700: #94e2cd;
+    --token-greenAccent-800: #b7ebde;
+    --token-greenAccent-900: #dbf5ee;
+    --token-redAccent-100: #2c100f;
+    --token-redAccent-500: #db4f4a;
+    --token-blueAccent-500: #6870fa;
+    --token-blueAccent-700: #3e4396;
+  }
+  .dark {
+    --token-grey-100: #e0e0e0;
+    --token-grey-200: #c2c2c2;
+    --token-grey-300: #a3a3a3;
+    --token-grey-400: #858585;
+    --token-grey-500: #666666;
+    --token-grey-600: #525252;
+    --token-grey-700: #3d3d3d;
+    --token-grey-800: #292929;
+    --token-grey-900: #141414;
+    --token-primary-100: #d0d1d5;
+    --token-primary-200: #a1a4ab;
+    --token-primary-300: #727681;
+    --token-primary-400: #1f2a40;
+    --token-primary-500: #141b2d;
+    --token-primary-600: #101624;
+    --token-primary-700: #0c101b;
+    --token-primary-800: #080b12;
+    --token-primary-900: #040509;
+    --token-greenAccent-100: #dbf5ee;
+    --token-greenAccent-200: #b7ebde;
+    --token-greenAccent-300: #94e2cd;
+    --token-greenAccent-400: #70d8bd;
+    --token-greenAccent-500: #4cceac;
+    --token-greenAccent-600: #3da58a;
+    --token-greenAccent-700: #2e7c67;
+    --token-greenAccent-800: #1e5245;
+    --token-greenAccent-900: #0f2922;
+    --token-redAccent-100: #f8dcdb;
+    --token-redAccent-500: #db4f4a;
+    --token-blueAccent-500: #6870fa;
+    --token-blueAccent-700: #3e4396;
+  }
+}
+
+@tailwind utilities;
+
+/* Scrollbar: pseudo-elements require global CSS */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #e0e0e0;
+}
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

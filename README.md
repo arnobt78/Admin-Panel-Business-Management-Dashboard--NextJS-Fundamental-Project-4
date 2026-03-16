@@ -1,4 +1,8 @@
-# Admin Panel User/Employee Management Dashboard - React Frontend UI
+# Admin Panel Business Management Dashboard - React Frontend
+
+A modern, fully-featured, and customizable admin dashboard built with React, Material-UI, Nivo charts, and more. This project is designed for learning, rapid prototyping, and real-world admin panel use cases.
+
+- **Live-Demo:** [https://admin-panel-user-dashboard.netlify.app/](https://admin-panel-user-dashboard.netlify.app/)
 
 ![Screenshot 2025-08-05 at 02 20 11](https://github.com/user-attachments/assets/683ecb88-f092-4dac-9d0f-15f677caf62f)
 ![Screenshot 2025-08-05 at 02 22 24](https://github.com/user-attachments/assets/972c4883-9351-4d6c-9937-d973c9972637)
@@ -12,16 +16,6 @@
 ![Screenshot 2025-08-05 at 02 25 10](https://github.com/user-attachments/assets/0b081ee8-f992-498c-9a3f-80c6e3df72fa)
 ![Screenshot 2025-08-05 at 02 25 24](https://github.com/user-attachments/assets/afd638bf-ad41-43a4-9b41-9b81885ad747)
 ![Screenshot 2025-08-05 at 02 25 48](https://github.com/user-attachments/assets/438916a2-0972-4144-87bf-a86f17df5132)
-
----
-
-A modern, fully-featured, and customizable admin dashboard built with React, Material-UI, Nivo charts, and more. This project is designed for learning, rapid prototyping, and real-world admin panel use cases.
-
-- **Live-Demo:** [https://admin-panel-user-dashboard.netlify.app/](https://admin-panel-user-dashboard.netlify.app/)
-
----
-
-## Table of Contents
 
 - [Project Overview](#project-overview)
 - [Features](#features)
@@ -200,19 +194,19 @@ The app will run at [http://localhost:3000](http://localhost:3000).
 
 ## Pages & Routes
 
-| Route         | Component         | Description                |
-|---------------|------------------|----------------------------|
-| `/`           | Dashboard        | Main dashboard overview    |
-| `/team`       | Team             | Team management grid       |
-| `/contacts`   | Contacts         | Contacts data grid         |
-| `/invoices`   | Invoices         | Invoices data grid         |
-| `/form`       | Form             | Profile form               |
-| `/calendar`   | Calendar         | Full-featured calendar     |
-| `/faq`        | FAQ              | FAQ accordion              |
-| `/bar`        | Bar              | Bar chart visualization    |
-| `/pie`        | Pie              | Pie chart visualization    |
-| `/line`       | Line             | Line chart visualization   |
-| `/geography`  | Geography        | Geography/choropleth chart |
+| Route        | Component | Description                |
+| ------------ | --------- | -------------------------- |
+| `/`          | Dashboard | Main dashboard overview    |
+| `/team`      | Team      | Team management grid       |
+| `/contacts`  | Contacts  | Contacts data grid         |
+| `/invoices`  | Invoices  | Invoices data grid         |
+| `/form`      | Form      | Profile form               |
+| `/calendar`  | Calendar  | Full-featured calendar     |
+| `/faq`       | FAQ       | FAQ accordion              |
+| `/bar`       | Bar       | Bar chart visualization    |
+| `/pie`       | Pie       | Pie chart visualization    |
+| `/line`      | Line      | Line chart visualization   |
+| `/geography` | Geography | Geography/choropleth chart |
 
 ---
 
@@ -231,15 +225,15 @@ All components are modular and can be reused in other projects:
 - **Charts**: Import any chart component and pass your own data/props. Example:
 
 ```jsx
-import BarChart from './components/BarChart';
+import BarChart from "./components/BarChart";
 
-<BarChart isDashboard={false} />
+<BarChart isDashboard={false} />;
 ```
 
 - **StatBox, ProgressCircle, Header**: Use for summary stats, progress indicators, and section headers. Example:
 
 ```jsx
-import StatBox from './components/StatBox';
+import StatBox from "./components/StatBox";
 
 <StatBox
   title="1,000"
@@ -247,7 +241,7 @@ import StatBox from './components/StatBox';
   progress="0.8"
   increase="+20%"
   icon={<YourIcon />}
-/>
+/>;
 ```
 
 - **Sidebar/Topbar**: Adapt for your own navigation needs. The sidebar is context-aware and can be collapsed/expanded from anywhere in the app.
@@ -265,7 +259,7 @@ To add a new page:
 <Route path="/yourpage" element={<YourPage />} />
 ```
 
-3. Add a menu item in `Sidebar.jsx`:
+1. Add a menu item in `Sidebar.jsx`:
 
 ```jsx
 <Item title="Your Page" to="/yourpage" icon={<YourIcon />} ... />
@@ -286,9 +280,7 @@ To add a new page:
         <Sidebar />
         <main className="content">
           <Topbar />
-          <Routes>
-            {/* ...routes... */}
-          </Routes>
+          <Routes>{/* ...routes... */}</Routes>
         </main>
       </div>
     </SidebarContext.Provider>
@@ -306,9 +298,15 @@ To add a new page:
 <ResponsiveLine
   data={data}
   theme={{
-    axis: { /* ... */ },
-    legends: { /* ... */ },
-    tooltip: { /* ... */ },
+    axis: {
+      /* ... */
+    },
+    legends: {
+      /* ... */
+    },
+    tooltip: {
+      /* ... */
+    },
   }}
   colors={isDashboard ? { datum: "color" } : { scheme: "nivo" }}
   /* ...other props... */
