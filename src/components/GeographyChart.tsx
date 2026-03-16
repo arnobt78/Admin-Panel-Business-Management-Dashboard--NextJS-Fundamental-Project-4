@@ -1,6 +1,6 @@
 "use client";
 
-import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from "recharts";
+import { BarChart as RechartsBarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip, LabelList } from "recharts";
 import { mockGeographyData } from "@/data/mockData";
 
 interface GeographyChartProps {
@@ -24,10 +24,13 @@ export default function GeographyChart({ isDashboard = false }: GeographyChartPr
         <XAxis type="number" stroke="#a3a3a3" tick={{ fontSize: 10 }} hide={isDashboard} />
         <YAxis type="category" dataKey="id" stroke="#a3a3a3" tick={{ fontSize: 10 }} width={40} />
         <Tooltip
-          contentStyle={{ backgroundColor: "#1f2a40", border: "none", borderRadius: 8 }}
+          contentStyle={{ backgroundColor: "#1f2a40", border: "none", borderRadius: 8, color: "#fff" }}
+          labelStyle={{ color: "#fff" }}
           formatter={(v) => (typeof v === "number" ? v.toLocaleString() : String(v ?? ""))}
         />
-        <Bar dataKey="value" fill="#4cceac" radius={[0, 4, 4, 0]} />
+        <Bar dataKey="value" fill="#4cceac" radius={[0, 4, 4, 0]}>
+          <LabelList dataKey="value" position="right" fill="#1f2a40" fontSize={10} formatter={(v) => (typeof v === "number" ? v.toLocaleString() : String(v ?? ""))} />
+        </Bar>
       </RechartsBarChart>
     </ResponsiveContainer>
   );

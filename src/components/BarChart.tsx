@@ -37,8 +37,9 @@ export default function BarChart({ isDashboard = false }: BarChartProps) {
         <XAxis dataKey="country" stroke="#a3a3a3" tick={{ fontSize: 12 }} hide={isDashboard} />
         <YAxis stroke="#a3a3a3" tick={{ fontSize: 12 }} hide={isDashboard} />
         <Tooltip
-          contentStyle={{ backgroundColor: "#1f2a40", border: "none", borderRadius: 8 }}
-          labelStyle={{ color: "#e0e0e0" }}
+          contentStyle={{ backgroundColor: "#1f2a40", border: "none", borderRadius: 8, outline: "none", boxShadow: "none" }}
+          labelStyle={{ color: "#fff" }}
+          cursor={{ stroke: "transparent" }}
         />
         {!isDashboard && <Legend />}
         {KEYS.map((key, i) => (

@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Box, Button, IconButton, Typography } from "@mui/material";
+import { Box, Button, IconButton, Typography, Tooltip } from "@mui/material";
 import Header from "@/components/Header";
 import StatBox from "@/components/StatBox";
 import ProgressCircle from "@/components/ProgressCircle";
@@ -209,7 +209,11 @@ export default function Dashboard() {
             Campaign
           </Typography>
           <Box className="flex flex-col items-center mt-6">
-            <ProgressCircle size="125" />
+            <Tooltip title="75% progress · $48,352 revenue" placement="top" arrow>
+              <Box component="span" sx={{ display: "inline-block" }}>
+                <ProgressCircle size="125" />
+              </Box>
+            </Tooltip>
             <Typography
               variant="h5"
               className="text-token-greenAccent-500 mt-4"
@@ -220,7 +224,7 @@ export default function Dashboard() {
           </Box>
         </motion.div>
         <motion.div
-          className="col-span-4 row-span-2 bg-token-primary-400 rounded-xl"
+          className="col-span-4 row-span-2 bg-token-primary-400 rounded-xl overflow-hidden"
           variants={fadeInUp}
         >
           <Typography
@@ -229,7 +233,7 @@ export default function Dashboard() {
           >
             Sales Quantity
           </Typography>
-          <Box className="h-[250px] -mt-5" ref={barRef}>
+          <Box className="h-[250px] -mt-5 overflow-hidden" ref={barRef}>
             {barReady && <BarChart isDashboard={true} />}
           </Box>
         </motion.div>

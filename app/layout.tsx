@@ -25,7 +25,7 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const savedTheme = cookieStore.get("admin-dashboard-theme")?.value;
   const initialMode = savedTheme === "light" || savedTheme === "dark" ? savedTheme : "dark";
-  const themeScript = `(function(){var d=document.documentElement;var m=localStorage.getItem('admin-dashboard-theme')||'${initialMode}';d.classList.toggle('dark',m==='dark');d.style.backgroundColor=m==='dark'?'#141b2d':'#fcfcfc';})();`;
+  const themeScript = `(function(){var d=document.documentElement;var m=localStorage.getItem('admin-dashboard-theme');if(!m){var q=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;m=q?'dark':'light';}if(!m)m='${initialMode}';d.classList.toggle('dark',m==='dark');d.style.backgroundColor=m==='dark'?'#141b2d':'#fcfcfc';})();`;
 
   return (
     <html lang="en" className={`${plusJakarta.variable} h-full w-full font-sans antialiased`} suppressHydrationWarning>

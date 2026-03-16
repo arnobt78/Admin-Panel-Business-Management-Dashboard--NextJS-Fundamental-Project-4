@@ -196,7 +196,8 @@ export const useMode = (initialMode?: "light" | "dark"): [ReturnType<typeof crea
     if (typeof window === "undefined") return initialMode ?? "dark";
     const stored = localStorage.getItem(THEME_KEY) as PaletteMode | null;
     if (stored) return stored;
-    return initialMode ?? (document.documentElement.classList.contains("dark") ? "dark" : "light");
+    const prefersDark = window.matchMedia?.("(prefers-color-scheme: dark)").matches;
+    return initialMode ?? (prefersDark ? "dark" : "light");
   });
   const colorMode = useMemo<ColorModeContextValue>(
     () => ({

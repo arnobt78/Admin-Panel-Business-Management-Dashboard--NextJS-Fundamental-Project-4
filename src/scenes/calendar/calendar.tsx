@@ -3,7 +3,7 @@
 /**
  * Calendar page: FullCalendar with day/week/month/list views and event add/delete.
  */
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import FullCalendar from "@fullcalendar/react";
 import { formatDate } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -16,6 +16,12 @@ import {
   ListItem,
   ListItemText,
   Typography,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
 } from "@mui/material";
 import Header from "@/components/Header";
 import type { EventClickArg, DateSelectArg } from "@fullcalendar/core";
@@ -30,36 +36,97 @@ interface CalendarEvent {
 
 export default function Calendar() {
   const [currentEvents, setCurrentEvents] = useState<CalendarEvent[]>([]);
+  const [eventDialogOpen, setEventDialogOpen] = useState(false);
+  const [pendingSelect, setPendingSelect] = useState<DateSelectArg | null>(null);
+  const [eventTitle, setEventTitle] = useState("");
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [pendingDelete, setPendingDelete] = useState<EventClickArg | null>(null);
 
-  const handleDateClick = (selected: DateSelectArg) => {
-    const title = prompt("Please enter a new title for your event");
-    const calendarApi = selected.view.calendar;
-    calendarApi.unselect();
+  const handleDateClick = useCallback((selected: DateSelectArg) => {
+    selected.view.calendar.unselect();
+    setPendingSelect(selected);
+    setEventTitle("");
+    setEventDialogOpen(true);
+  }, []);
 
-    if (title) {
-      calendarApi.addEvent({
-        id: `${selected.startStr}-${title}`,
-        title,
-        start: selected.startStr,
-        end: selected.endStr,
-        allDay: selected.allDay,
+  const handleEventSubmit = useCallback(() => {
+    if (pendingSelect && eventTitle.trim()) {
+      pendingSelect.view.calendar.addEvent({
+        id: `${pendingSelect.startStr}-${eventTitle}`,
+        title: eventTitle.trim(),
+        start: pendingSelect.startStr,
+        end: pendingSelect.endStr,
+        allDay: pendingSelect.allDay,
       });
+      setEventDialogOpen(false);
+      setPendingSelect(null);
     }
-  };
+  }, [pendingSelect, eventTitle]);
 
-  const handleEventClick = (selected: EventClickArg) => {
-    if (
-      window.confirm(
-        `Are you sure you want to delete the event '${selected.event.title}'`
-      )
-    ) {
-      selected.event.remove();
+  const handleEventClick = useCallback((selected: EventClickArg) => {
+    setPendingDelete(selected);
+    setDeleteDialogOpen(true);
+  }, []);
+
+  const handleDeleteConfirm = useCallback(() => {
+    if (pendingDelete) {
+      pendingDelete.event.remove();
+      setDeleteDialogOpen(false);
+      setPendingDelete(null);
     }
-  };
+  }, [pendingDelete]);
 
   return (
     <Box className="m-5">
       <Header title="Calendar" subtitle="Full Calendar Interactive Page" />
+      <Dialog open={eventDialogOpen} onClose={() => { setEventDialogOpen(false); setPendingSelect(null); }} maxWidth="sm" fullWidth>
+        <DialogTitle className="bg-token-primary-400 text-token-grey-100">
+          New Event
+        </DialogTitle>
+        <DialogContent className="bg-token-primary-400 pt-4">
+          <TextField
+            autoFocus
+            fullWidth
+            label="Event title"
+            placeholder="Enter event title"
+            value={eventTitle}
+            onChange={(e) => setEventTitle(e.target.value)}
+            onKeyDown={(e) => { if (e.key === "Enter") handleEventSubmit(); }}
+            InputLabelProps={{ className: "text-token-grey-300" }}
+            InputProps={{ className: "text-token-grey-100" }}
+            sx={{
+              "& .MuiOutlinedInput-root": {
+                "& fieldset": { borderColor: "var(--token-primary-600)" },
+                "&:hover fieldset": { borderColor: "var(--token-blueAccent-500)" },
+              },
+            }}
+          />
+        </DialogContent>
+        <DialogActions className="bg-token-primary-400 gap-2 px-6 pb-4">
+          <Button onClick={() => { setEventDialogOpen(false); setPendingSelect(null); }} className="text-token-grey-300">
+            Cancel
+          </Button>
+          <Button onClick={handleEventSubmit} variant="contained" className="bg-token-blueAccent-700" disabled={!eventTitle.trim()}>
+            Add Event
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog open={deleteDialogOpen} onClose={() => { setDeleteDialogOpen(false); setPendingDelete(null); }}>
+        <DialogTitle className="bg-token-primary-400 text-token-grey-100">
+          Delete Event
+        </DialogTitle>
+        <DialogContent className="bg-token-primary-400 text-token-grey-200">
+          {pendingDelete && `Are you sure you want to delete the event "${pendingDelete.event.title}"?`}
+        </DialogContent>
+        <DialogActions className="bg-token-primary-400">
+          <Button onClick={() => { setDeleteDialogOpen(false); setPendingDelete(null); }} className="text-token-grey-300">
+            Cancel
+          </Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Box className="flex justify-between">
         <Box className="flex-[1_1_20%] bg-token-primary-400 p-4 rounded">
           <Typography variant="h5">Events</Typography>
