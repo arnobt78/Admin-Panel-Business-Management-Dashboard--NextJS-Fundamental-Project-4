@@ -1,4 +1,4 @@
-# Admin Dashboard - Next.js, React, TypeScript, TailwindCSS Fundamental Project 4 (including analytics, management, charts, team/contacts/invoices, form, calendar, FAQ, theme)
+# Admin Dashboard Landing Page - Next.js, React, TypeScript, TailwindCSS Fundamental Project 4 (including analytics, management, charts, team/contacts/invoices, form, calendar, FAQ, theme)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
