@@ -147,7 +147,7 @@ export default function Dashboard() {
               Recent Transactions
             </Typography>
           </Box>
-          {mockTransactions.map((transaction, i) => (
+          {(mockTransactions ?? []).map((transaction, i) => (
             <Box
               key={`${transaction.txId}-${i}`}
               className="flex justify-between items-center border-b-4 border-token-primary-500 p-4"

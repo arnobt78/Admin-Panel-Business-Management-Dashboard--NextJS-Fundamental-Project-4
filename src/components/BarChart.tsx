@@ -15,10 +15,12 @@ interface BarChartProps {
 
 export default function BarChart({ isDashboard = false }: BarChartProps) {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode as "light" | "dark");
+  const mode = theme?.palette?.mode ?? "dark";
+  const colors = tokens(mode as "light" | "dark");
+  const safeData = Array.isArray(mockBarData) ? (mockBarData as unknown as Array<Record<string, string | number>>) : [];
   return (
     <ResponsiveBar
-      data={mockBarData as unknown as Array<Record<string, string | number>>}
+      data={safeData}
       theme={{
         axis: {
           domain: { line: { stroke: colors.grey[100] } },

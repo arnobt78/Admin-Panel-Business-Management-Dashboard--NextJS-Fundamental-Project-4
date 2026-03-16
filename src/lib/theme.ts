@@ -28,7 +28,7 @@ export interface Tokens {
   blueAccent: ColorScale;
 }
 
-export const tokens = (mode: PaletteMode): Tokens =>
+export const tokens = (mode: PaletteMode | undefined): Tokens =>
   mode === "dark"
     ? {
         grey: {

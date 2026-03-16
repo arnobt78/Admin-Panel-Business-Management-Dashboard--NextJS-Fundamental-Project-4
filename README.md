@@ -1,8 +1,8 @@
-# Admin Panel Business Management Dashboard - React Frontend
+# Admin Panel Business Management Dashboard - Next.js, React, Typescript, TailwindCSS Fundamental Project 4
 
 A modern, fully-featured, and customizable admin dashboard built with React, Material-UI, Nivo charts, and more. This project is designed for learning, rapid prototyping, and real-world admin panel use cases.
 
-- **Live-Demo:** [https://admin-panel-user-dashboard.netlify.app/](https://admin-panel-user-dashboard.netlify.app/)
+- **Live-Demo:** [https://management-admin-panel.vercel.app/](https://management-admin-panel.vercel.app/)
 
 ![Screenshot 2025-08-05 at 02 20 11](https://github.com/user-attachments/assets/683ecb88-f092-4dac-9d0f-15f677caf62f)
 ![Screenshot 2025-08-05 at 02 22 24](https://github.com/user-attachments/assets/972c4883-9351-4d6c-9937-d973c9972637)

@@ -13,14 +13,24 @@ interface GeographyChartProps {
   isDashboard?: boolean;
 }
 
+const features = Array.isArray(geoFeatures?.features) ? geoFeatures.features : [];
+
 export default function GeographyChart({
   isDashboard = false,
 }: GeographyChartProps) {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode as "light" | "dark");
+  const mode = theme?.palette?.mode ?? "dark";
+  const colors = tokens(mode as "light" | "dark");
+  if (features.length === 0) {
+    return (
+      <div className="flex h-full min-h-[400px] items-center justify-center text-token-grey-400">
+        Map data unavailable
+      </div>
+    );
+  }
   return (
     <ResponsiveChoropleth
-      data={data}
+      data={data ?? []}
       theme={{
         axis: {
           domain: { line: { stroke: colors.grey[100] } },
@@ -32,7 +42,7 @@ export default function GeographyChart({
         },
         legends: { text: { fill: colors.grey[100] } },
       }}
-      features={geoFeatures.features}
+      features={features}
       margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
       domain={[0, 1000000]}
       unknownColor="#666666"

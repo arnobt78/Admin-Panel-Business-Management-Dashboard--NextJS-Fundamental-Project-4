@@ -18,10 +18,12 @@ export default function LineChart({
   isDashboard = false,
 }: LineChartProps) {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode as "light" | "dark");
+  const mode = theme?.palette?.mode ?? "dark";
+  const colors = tokens(mode as "light" | "dark");
+  const safeData = Array.isArray(data) ? data : [];
   return (
     <ResponsiveLine
-      data={data}
+      data={safeData}
       theme={{
         axis: {
           domain: { line: { stroke: colors.grey[100] } },
