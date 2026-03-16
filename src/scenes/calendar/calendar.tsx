@@ -22,7 +22,9 @@ import {
   DialogActions,
   Button,
   TextField,
+  useTheme,
 } from "@mui/material";
+import { CalendarPlus } from "lucide-react";
 import Header from "@/components/Header";
 import type { EventClickArg, DateSelectArg } from "@fullcalendar/core";
 
@@ -35,12 +37,18 @@ interface CalendarEvent {
 }
 
 export default function Calendar() {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
   const [currentEvents, setCurrentEvents] = useState<CalendarEvent[]>([]);
   const [eventDialogOpen, setEventDialogOpen] = useState(false);
-  const [pendingSelect, setPendingSelect] = useState<DateSelectArg | null>(null);
+  const [pendingSelect, setPendingSelect] = useState<DateSelectArg | null>(
+    null,
+  );
   const [eventTitle, setEventTitle] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [pendingDelete, setPendingDelete] = useState<EventClickArg | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<EventClickArg | null>(
+    null,
+  );
 
   const handleDateClick = useCallback((selected: DateSelectArg) => {
     selected.view.calendar.unselect();
@@ -77,13 +85,53 @@ export default function Calendar() {
   }, [pendingDelete]);
 
   return (
-    <Box className="m-5">
+    <Box className="m-4">
       <Header title="Calendar" subtitle="Full Calendar Interactive Page" />
-      <Dialog open={eventDialogOpen} onClose={() => { setEventDialogOpen(false); setPendingSelect(null); }} maxWidth="sm" fullWidth>
-        <DialogTitle className="bg-token-primary-400 text-token-grey-100">
+      <Dialog
+        open={eventDialogOpen}
+        onClose={() => {
+          setEventDialogOpen(false);
+          setPendingSelect(null);
+        }}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            bgcolor: isDark
+              ? "var(--token-primary-500)"
+              : "var(--token-primary-400)",
+            color: "var(--token-grey-100)",
+            overflow: "visible",
+          },
+        }}
+      >
+        <DialogTitle
+          sx={{
+            pb: 2,
+            pt: 2.5,
+            color: "var(--token-grey-100)",
+            bgcolor: isDark
+              ? "var(--token-primary-500)"
+              : "var(--token-primary-400)",
+            display: "flex",
+            alignItems: "center",
+            gap: 1.5,
+          }}
+        >
+          <CalendarPlus className="h-5 w-5 shrink-0" />
           New Event
         </DialogTitle>
-        <DialogContent className="bg-token-primary-400 pt-4">
+        <DialogContent
+          sx={{
+            bgcolor: isDark
+              ? "var(--token-primary-500)"
+              : "var(--token-primary-400)",
+            color: "var(--token-grey-100)",
+            pt: 6,
+            pb: 3,
+            overflow: "visible",
+          }}
+        >
           <TextField
             autoFocus
             fullWidth
@@ -91,38 +139,121 @@ export default function Calendar() {
             placeholder="Enter event title"
             value={eventTitle}
             onChange={(e) => setEventTitle(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter") handleEventSubmit(); }}
-            InputLabelProps={{ className: "text-token-grey-300" }}
-            InputProps={{ className: "text-token-grey-100" }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") handleEventSubmit();
+            }}
             sx={{
-              "& .MuiOutlinedInput-root": {
-                "& fieldset": { borderColor: "var(--token-primary-600)" },
-                "&:hover fieldset": { borderColor: "var(--token-blueAccent-500)" },
+              mt: 1,
+              "& .MuiInputLabel-root": { color: "var(--token-grey-300)" },
+              "& .MuiInputLabel-root.Mui-focused": {
+                color: "var(--token-blueAccent-500)",
               },
+              "& .MuiOutlinedInput-input": { color: "var(--token-grey-100)" },
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: isDark
+                  ? "var(--token-grey-600)"
+                  : "var(--token-primary-600)",
+              },
+              "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: isDark
+                    ? "var(--token-grey-500)"
+                    : "var(--token-blueAccent-500)",
+                },
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                {
+                  borderColor: "var(--token-blueAccent-500)",
+                },
             }}
           />
         </DialogContent>
-        <DialogActions className="bg-token-primary-400 gap-2 px-6 pb-4">
-          <Button onClick={() => { setEventDialogOpen(false); setPendingSelect(null); }} className="text-token-grey-300">
+        <DialogActions
+          sx={{
+            bgcolor: isDark
+              ? "var(--token-primary-500)"
+              : "var(--token-primary-400)",
+            gap: 1,
+            px: 3,
+            pb: 3,
+            pt: 0,
+          }}
+        >
+          <Button
+            onClick={() => {
+              setEventDialogOpen(false);
+              setPendingSelect(null);
+            }}
+            sx={{ color: "var(--token-grey-300)" }}
+          >
             Cancel
           </Button>
-          <Button onClick={handleEventSubmit} variant="contained" className="bg-token-blueAccent-700" disabled={!eventTitle.trim()}>
+          <Button
+            onClick={handleEventSubmit}
+            variant="contained"
+            sx={{
+              bgcolor: "var(--token-blueAccent-700)",
+              color: isDark ? "var(--token-grey-100)" : "#fff",
+              "&:hover": {
+                bgcolor: isDark
+                  ? "var(--token-blueAccent-600)"
+                  : "var(--token-blueAccent-500)",
+              },
+              "&:disabled": {
+                bgcolor: "var(--token-primary-600)",
+                color: "var(--token-grey-500)",
+              },
+            }}
+            disabled={!eventTitle.trim()}
+          >
             Add Event
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={deleteDialogOpen} onClose={() => { setDeleteDialogOpen(false); setPendingDelete(null); }}>
-        <DialogTitle className="bg-token-primary-400 text-token-grey-100">
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={() => {
+          setDeleteDialogOpen(false);
+          setPendingDelete(null);
+        }}
+        PaperProps={{
+          sx: {
+            bgcolor: "var(--token-primary-400)",
+            color: "var(--token-grey-100)",
+          },
+        }}
+      >
+        <DialogTitle sx={{ color: "var(--token-grey-100)" }}>
           Delete Event
         </DialogTitle>
-        <DialogContent className="bg-token-primary-400 text-token-grey-200">
-          {pendingDelete && `Are you sure you want to delete the event "${pendingDelete.event.title}"?`}
+        <DialogContent
+          sx={{
+            bgcolor: "var(--token-primary-400)",
+            color: "var(--token-grey-200)",
+          }}
+        >
+          {pendingDelete &&
+            `Are you sure you want to delete the event "${pendingDelete.event.title}"?`}
         </DialogContent>
-        <DialogActions className="bg-token-primary-400">
-          <Button onClick={() => { setDeleteDialogOpen(false); setPendingDelete(null); }} className="text-token-grey-300">
+        <DialogActions
+          sx={{
+            bgcolor: "var(--token-primary-400)",
+            color: "var(--token-grey-100)",
+          }}
+        >
+          <Button
+            onClick={() => {
+              setDeleteDialogOpen(false);
+              setPendingDelete(null);
+            }}
+            sx={{ color: "var(--token-grey-300)" }}
+          >
             Cancel
           </Button>
-          <Button onClick={handleDeleteConfirm} color="error" variant="contained">
+          <Button
+            onClick={handleDeleteConfirm}
+            color="error"
+            variant="contained"
+          >
             Delete
           </Button>
         </DialogActions>
@@ -164,8 +295,7 @@ export default function Calendar() {
             headerToolbar={{
               left: "prev,next today",
               center: "title",
-              right:
-                "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
+              right: "dayGridMonth,timeGridWeek,timeGridDay,listMonth",
             }}
             initialView="dayGridMonth"
             editable={true}
@@ -182,7 +312,7 @@ export default function Calendar() {
                   start: e.startStr || "",
                   end: e.endStr,
                   allDay: e.allDay,
-                }))
+                })),
               );
             }}
             initialEvents={[

@@ -13,20 +13,21 @@ export default function Line() {
   const [containerReady, setContainerReady] = useState(false);
 
   useEffect(() => {
-    function checkSize() {
-      if (chartContainerRef.current) {
-        const { width, height } =
-          chartContainerRef.current.getBoundingClientRect();
-        setContainerReady(width > 0 && height > 0);
-      }
-    }
-    checkSize();
-    window.addEventListener("resize", checkSize);
-    return () => window.removeEventListener("resize", checkSize);
+    const el = chartContainerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      const { width, height } = entries[0]?.contentRect ?? {
+        width: 0,
+        height: 0,
+      };
+      setContainerReady(width > 0 && height > 0);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
 
   return (
-    <Box className="m-5">
+    <Box className="m-4">
       <Header title="Line Chart" subtitle="Simple Line Chart" />
       <Box ref={chartContainerRef} className="h-[75vh]">
         {containerReady && <LineChart />}

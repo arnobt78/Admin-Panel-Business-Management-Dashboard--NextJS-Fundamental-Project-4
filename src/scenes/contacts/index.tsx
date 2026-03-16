@@ -34,7 +34,7 @@ export default function Contacts() {
   ];
 
   return (
-    <Box className="m-5">
+    <Box className="m-4">
       <Header
         title="CONTACTS"
         subtitle="List of Contacts for Future Reference"

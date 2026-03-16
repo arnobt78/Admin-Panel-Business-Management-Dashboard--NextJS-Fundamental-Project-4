@@ -4,7 +4,11 @@
  * Team page: data grid of team members with access level badges.
  */
 import { Box, Typography } from "@mui/material";
-import { DataGrid, GridRenderCellParams, type GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridRenderCellParams,
+  type GridColDef,
+} from "@mui/x-data-grid";
 import { mockDataTeam } from "@/data/mockData";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
@@ -57,7 +61,7 @@ export default function Team() {
   ];
 
   return (
-    <Box className="m-5">
+    <Box className="m-4">
       <Header title="TEAM" subtitle="Managing the Team Members" />
       <Box
         className="mt-10 h-[75vh]"

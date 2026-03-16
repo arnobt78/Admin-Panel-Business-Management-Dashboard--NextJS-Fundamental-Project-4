@@ -19,7 +19,7 @@ export default function GeographyChart({ isDashboard = false }: GeographyChartPr
   }
 
   return (
-    <ResponsiveContainer width="100%" height="100%" minHeight={150}>
+    <ResponsiveContainer width="100%" height="100%" minHeight={150} initialDimension={{ width: 1, height: 1 }}>
       <RechartsBarChart data={data} layout="vertical" margin={{ top: 5, right: 20, left: 30, bottom: 5 }}>
         <XAxis type="number" stroke="#a3a3a3" tick={{ fontSize: 10 }} hide={isDashboard} />
         <YAxis type="category" dataKey="id" stroke="#a3a3a3" tick={{ fontSize: 10 }} width={40} />

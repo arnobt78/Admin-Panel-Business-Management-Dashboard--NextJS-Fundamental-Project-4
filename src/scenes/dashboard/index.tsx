@@ -2,18 +2,18 @@
 
 import { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Box, Button, IconButton, Typography, Tooltip } from "@mui/material";
+import { Box, IconButton, Typography, Tooltip } from "@mui/material";
 import Header from "@/components/Header";
 import StatBox from "@/components/StatBox";
 import ProgressCircle from "@/components/ProgressCircle";
 import LineChart from "@/components/LineChart";
 import BarChart from "@/components/BarChart";
 import GeographyChart from "@/components/GeographyChart";
-import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import EmailIcon from "@mui/icons-material/Email";
 import PointOfSaleIcon from "@mui/icons-material/PointOfSale";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
+import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
 import { mockTransactions } from "@/data/mockData";
 
 const fadeInUp = {
@@ -41,42 +41,30 @@ export default function Dashboard() {
   const [geoReady, setGeoReady] = useState(false);
 
   useEffect(() => {
-    const checkSize = (
-      ref: React.RefObject<HTMLDivElement>,
-      setReady: (v: boolean) => void,
-    ) => {
-      if (ref.current) {
-        const { width, height } = ref.current.getBoundingClientRect();
-        setReady(width > 0 && height > 0);
-      }
-    };
-    const handleResize = () => {
-      checkSize(lineRef, setLineReady);
-      checkSize(barRef, setBarReady);
-      checkSize(geoRef, setGeoReady);
-    };
-    const rafId = requestAnimationFrame(() => {
-      handleResize();
+    const refs = [
+      [lineRef, setLineReady],
+      [barRef, setBarReady],
+      [geoRef, setGeoReady],
+    ] as const;
+    const observers: ResizeObserver[] = [];
+    refs.forEach(([ref, setReady]) => {
+      if (!ref.current) return;
+      const ro = new ResizeObserver((entries) => {
+        const entry = entries[0];
+        if (entry) {
+          const { width, height } = entry.contentRect;
+          setReady(width > 0 && height > 0);
+        }
+      });
+      ro.observe(ref.current);
+      observers.push(ro);
     });
-    window.addEventListener("resize", handleResize);
-    return () => {
-      cancelAnimationFrame(rafId);
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => observers.forEach((ro) => ro.disconnect());
   }, []);
 
   return (
     <div className="min-h-full p-4">
-      <Box className="flex justify-between items-center">
-        <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-
-        <Box>
-          <Button className="bg-token-blueAccent-700 text-token-grey-100 text-sm font-bold py-2.5 px-4">
-            <DownloadOutlinedIcon className="mr-2.5" />
-            Download Reports
-          </Button>
-        </Box>
-      </Box>
+      <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
 
       <motion.div
         className="grid grid-cols-12 auto-rows-[140px] gap-4"

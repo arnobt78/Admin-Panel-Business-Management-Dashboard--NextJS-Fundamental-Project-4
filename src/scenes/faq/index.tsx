@@ -10,76 +10,64 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { useTheme } from "@mui/material/styles";
+
+const FAQ_ITEMS = [
+  { question: "An Important Question", answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget." },
+  { question: "Another Important Question", answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget." },
+  { question: "Your Favorite Question", answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget." },
+  { question: "Some Random Question", answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget." },
+  { question: "The Final Question", answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex, sit amet blandit leo lobortis eget." },
+];
+
+const DARK_FAQ_BG = [
+  "var(--token-primary-400)",
+  "#252d42",
+  "#1a2235",
+  "#2a3450",
+  "#151b2a",
+];
 
 export default function FAQ() {
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+
   return (
-    <Box className="m-5">
+    <Box className="m-4">
       <Header title="FAQ" subtitle="Frequently Asked Questions Page" />
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className="text-token-greenAccent-500" variant="h5">
-            An Important Question
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className="text-token-greenAccent-500" variant="h5">
-            Another Important Question
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className="text-token-greenAccent-500" variant="h5">
-            Your Favorite Question
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className="text-token-greenAccent-500" variant="h5">
-            Some Random Question
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion defaultExpanded>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography className="text-token-greenAccent-500" variant="h5">
-            The Final Question
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
-      </Accordion>
+      {FAQ_ITEMS.map((item, i) => (
+        <Accordion
+          key={item.question}
+          defaultExpanded={i === 0}
+          sx={{
+            ...(isDark && {
+              bgcolor: DARK_FAQ_BG[i % DARK_FAQ_BG.length],
+              "&:before": { display: "none" },
+            }),
+          }}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            sx={{
+              "& .MuiAccordionSummary-expandIconWrapper": {
+                transition: "transform 0.3s ease",
+              },
+              "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+                transform: "rotate(180deg)",
+              },
+            }}
+          >
+            <Typography className="text-token-greenAccent-500" variant="h5">
+              {item.question}
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography sx={{ color: isDark ? "var(--token-grey-100)" : undefined }}>
+              {item.answer}
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+      ))}
     </Box>
   );
 }

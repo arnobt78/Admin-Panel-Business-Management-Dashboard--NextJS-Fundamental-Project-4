@@ -42,7 +42,7 @@ export default function Form() {
   };
 
   return (
-    <Box className="m-5">
+    <Box className="m-4">
       <Header title="CREATE USER" subtitle="Create a New User Profile" />
       <Formik
         onSubmit={handleFormSubmit}

@@ -32,6 +32,7 @@
     --token-redAccent-100: #2c100f;
     --token-redAccent-500: #db4f4a;
     --token-blueAccent-500: #6870fa;
+    --token-blueAccent-600: #535ac8;
     --token-blueAccent-700: #3e4396;
   }
   .dark {
@@ -65,6 +66,7 @@
     --token-redAccent-100: #f8dcdb;
     --token-redAccent-500: #db4f4a;
     --token-blueAccent-500: #6870fa;
+    --token-blueAccent-600: #535ac8;
     --token-blueAccent-700: #3e4396;
   }
 }

@@ -4,7 +4,11 @@
  * Invoices page: data grid of invoice balances.
  */
 import { Box, Typography } from "@mui/material";
-import { DataGrid, GridRenderCellParams, type GridColDef } from "@mui/x-data-grid";
+import {
+  DataGrid,
+  GridRenderCellParams,
+  type GridColDef,
+} from "@mui/x-data-grid";
 import { mockDataInvoices } from "@/data/mockData";
 import Header from "@/components/Header";
 import type { Invoice } from "@/types";
@@ -34,7 +38,7 @@ export default function Invoices() {
   ];
 
   return (
-    <Box className="m-5">
+    <Box className="m-4">
       <Header title="INVOICES" subtitle="List of Invoice Balances" />
       <Box
         className="mt-10 h-[75vh]"

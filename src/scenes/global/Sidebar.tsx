@@ -149,7 +149,7 @@ export function Sidebar() {
       {!isCollapsed && (
         <div
           className={cn(
-            "flex flex-col items-center py-6",
+            "flex flex-col items-center py-2",
             isDark && "border-b border-token-primary-600",
           )}
         >

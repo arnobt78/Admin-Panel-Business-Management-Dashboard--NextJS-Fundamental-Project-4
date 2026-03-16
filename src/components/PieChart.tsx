@@ -1,9 +1,34 @@
 "use client";
 
-import { PieChart as RechartsPieChart, Pie, ResponsiveContainer, Legend, Tooltip, LabelList } from "recharts";
+import { PieChart as RechartsPieChart, Pie, ResponsiveContainer, Legend, Tooltip } from "recharts";
 import { mockPieData } from "@/data/mockData";
 
 const COLORS = ["#4cceac", "#70d8bd", "#868dfb", "#e2726e", "#eed312"];
+
+const RADIAN = Math.PI / 180;
+
+function renderCustomLabel(props: {
+  cx?: number;
+  cy?: number;
+  midAngle?: number;
+  outerRadius?: number;
+  payload?: { label?: string; fill?: string; value?: number };
+  percent?: number;
+}) {
+  const { cx = 0, cy = 0, midAngle = 0, outerRadius = 80, payload, percent } = props;
+  const radius = outerRadius + 24;
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const pct = percent != null ? `${(percent * 100).toFixed(0)}%` : "";
+  const text = `${payload?.label ?? ""} ${pct}`.trim();
+  const fill = payload?.fill ?? "#666";
+  const textAnchor = x >= cx ? "start" : "end";
+  return (
+    <text x={x} y={y} fill={fill} textAnchor={textAnchor} fontSize={12} dominantBaseline="central">
+      {text}
+    </text>
+  );
+}
 
 export default function PieChart() {
   const data = Array.isArray(mockPieData) ? mockPieData : [];
@@ -22,7 +47,7 @@ export default function PieChart() {
   }
 
   return (
-    <ResponsiveContainer width="100%" height="100%" minHeight={150}>
+    <ResponsiveContainer width="100%" height="100%" minHeight={150} initialDimension={{ width: 1, height: 1 }}>
       <RechartsPieChart>
         <Pie
           data={dataWithFill}
@@ -33,28 +58,9 @@ export default function PieChart() {
           paddingAngle={5}
           dataKey="value"
           nameKey="label"
-        >
-          <LabelList
-            dataKey="value"
-            position="outside"
-            valueAccessor={(entry) => {
-              const value = entry.value as number;
-              const label = (entry.payload as { label?: string })?.label ?? "";
-              const pct = total ? (((value ?? 0) / total) * 100).toFixed(0) : "0";
-              return `${label} ${pct}%`;
-            }}
-            content={(props: unknown) => {
-              const p = props as { payload?: { fill?: string }; valueAccessor?: (e: unknown) => unknown; value?: unknown; x?: number; y?: number; textAnchor?: string };
-              const fill = p.payload?.fill ?? "#666";
-              const value = p.valueAccessor?.(p) ?? p.value;
-              return (
-                <text x={p.x} y={p.y} fill={fill} textAnchor={(p.textAnchor as "start" | "middle" | "end") ?? "middle"} fontSize={12}>
-                  {String(value ?? "")}
-                </text>
-              );
-            }}
-          />
-        </Pie>
+          label={renderCustomLabel}
+          labelLine={{ stroke: "var(--token-grey-400)", strokeWidth: 1 }}
+        />
         <Tooltip
           contentStyle={{ backgroundColor: "#1f2a40", border: "none", borderRadius: 8, color: "#fff" }}
           formatter={(value, name) => [

@@ -15,20 +15,21 @@ export default function Bar() {
   const [containerReady, setContainerReady] = useState(false);
 
   useEffect(() => {
-    function checkSize() {
-      if (chartContainerRef.current) {
-        const { width, height } =
-          chartContainerRef.current.getBoundingClientRect();
-        setContainerReady(width > 0 && height > 0);
-      }
-    }
-    checkSize();
-    window.addEventListener("resize", checkSize);
-    return () => window.removeEventListener("resize", checkSize);
+    const el = chartContainerRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => {
+      const { width, height } = entries[0]?.contentRect ?? {
+        width: 0,
+        height: 0,
+      };
+      setContainerReady(width > 0 && height > 0);
+    });
+    ro.observe(el);
+    return () => ro.disconnect();
   }, [isCollapsed]);
 
   return (
-    <Box className="m-5">
+    <Box className="m-4">
       <Header title="Bar Chart" subtitle="Simple Bar Chart" />
       <Box ref={chartContainerRef} className="h-[75vh] min-h-[300px] w-full">
         {containerReady && (
