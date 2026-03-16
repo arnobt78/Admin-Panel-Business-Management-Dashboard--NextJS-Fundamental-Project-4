@@ -1,108 +1,50 @@
 "use client";
 
-/**
- * Bar chart (Nivo ResponsiveBar) for categorical data.
- * Used on dashboard and Bar chart page.
- */
-import { useTheme } from "@mui/material";
-import { ResponsiveBar } from "@nivo/bar";
-import { tokens } from "@/lib/theme";
+import {
+  BarChart as RechartsBarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import { mockBarData } from "@/data/mockData";
 
 interface BarChartProps {
   isDashboard?: boolean;
 }
 
+const KEYS = ["hot dog", "burger", "kebab", "donut"];
+const COLORS = ["#4cceac", "#70d8bd", "#868dfb", "#e2726e"];
+
 export default function BarChart({ isDashboard = false }: BarChartProps) {
-  const theme = useTheme();
-  const mode = theme?.palette?.mode ?? "dark";
-  const colors = tokens(mode as "light" | "dark");
-  const safeData = Array.isArray(mockBarData) ? (mockBarData as unknown as Array<Record<string, string | number>>) : [];
+  const data = Array.isArray(mockBarData) ? mockBarData : [];
+
+  if (data.length === 0) {
+    return (
+      <div className="flex h-full min-h-[200px] items-center justify-center text-token-grey-500">
+        No bar data
+      </div>
+    );
+  }
+
   return (
-    <ResponsiveBar
-      data={safeData}
-      theme={{
-        axis: {
-          domain: { line: { stroke: colors.grey[100] } },
-          legend: { text: { fill: colors.grey[100] } },
-          ticks: {
-            line: { stroke: colors.grey[100], strokeWidth: 1 },
-            text: { fill: colors.grey[100] },
-          },
-        },
-        legends: { text: { fill: colors.grey[100] } },
-      }}
-      keys={["hot dog", "burger", "sandwich", "kebab", "fries", "donut"]}
-      indexBy="country"
-      margin={{ top: 50, right: 130, bottom: 50, left: 60 }}
-      padding={0.3}
-      valueScale={{ type: "linear" }}
-      indexScale={{ type: "band", round: true }}
-      colors={{ scheme: "nivo" }}
-      defs={[
-        {
-          id: "dots",
-          type: "patternDots",
-          background: "inherit",
-          color: "#38bcb2",
-          size: 4,
-          padding: 1,
-          stagger: true,
-        },
-        {
-          id: "lines",
-          type: "patternLines",
-          background: "inherit",
-          color: "#eed312",
-          rotation: -45,
-          lineWidth: 6,
-          spacing: 10,
-        },
-      ]}
-      borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
-      axisTop={null}
-      axisRight={null}
-      axisBottom={{
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: isDashboard ? undefined : "country",
-        legendPosition: "middle",
-        legendOffset: 32,
-      }}
-      axisLeft={{
-        tickSize: 5,
-        tickPadding: 5,
-        tickRotation: 0,
-        legend: isDashboard ? undefined : "food",
-        legendPosition: "middle",
-        legendOffset: -40,
-      }}
-      enableLabel={false}
-      labelSkipWidth={12}
-      labelSkipHeight={12}
-      labelTextColor={{ from: "color", modifiers: [["darker", 1.6]] }}
-      legends={[
-        {
-          dataFrom: "keys",
-          anchor: "bottom-right",
-          direction: "column",
-          justify: false,
-          translateX: 120,
-          translateY: 0,
-          itemsSpacing: 2,
-          itemWidth: 100,
-          itemHeight: 20,
-          itemDirection: "left-to-right",
-          itemOpacity: 0.85,
-          symbolSize: 20,
-          effects: [{ on: "hover", style: { itemOpacity: 1 } }],
-        },
-      ]}
-      role="application"
-      barAriaLabel={(e) =>
-        `${e.id}: ${e.formattedValue} in country: ${e.indexValue}`
-      }
-    />
+    <ResponsiveContainer width="100%" height="100%">
+      <RechartsBarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+        <XAxis dataKey="country" stroke="#a3a3a3" tick={{ fontSize: 12 }} hide={isDashboard} />
+        <YAxis stroke="#a3a3a3" tick={{ fontSize: 12 }} hide={isDashboard} />
+        <Tooltip
+          contentStyle={{ backgroundColor: "#1f2a40", border: "none", borderRadius: 8 }}
+          labelStyle={{ color: "#e0e0e0" }}
+        />
+        {!isDashboard && <Legend />}
+        {KEYS.map((key, i) => (
+          <Bar key={key} dataKey={key} fill={COLORS[i % COLORS.length]} radius={[4, 4, 0, 0]} />
+        ))}
+      </RechartsBarChart>
+    </ResponsiveContainer>
   );
 }

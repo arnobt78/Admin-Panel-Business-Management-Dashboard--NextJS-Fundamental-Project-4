@@ -1,84 +1,43 @@
 "use client";
 
-/**
- * Pie chart (Nivo ResponsivePie) for part-of-whole data.
- */
-import { ResponsivePie } from "@nivo/pie";
-import { tokens } from "@/lib/theme";
-import { useTheme } from "@mui/material";
-import { mockPieData as data } from "@/data/mockData";
+import { PieChart as RechartsPieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recharts";
+import { mockPieData } from "@/data/mockData";
+
+const COLORS = ["#4cceac", "#70d8bd", "#868dfb", "#e2726e", "#eed312"];
 
 export default function PieChart() {
-  const theme = useTheme();
-  const mode = theme?.palette?.mode ?? "dark";
-  const colors = tokens(mode as "light" | "dark");
-  const safeData = Array.isArray(data) ? data : [];
+  const data = Array.isArray(mockPieData) ? mockPieData : [];
+
+  if (data.length === 0) {
+    return (
+      <div className="flex h-full min-h-[200px] items-center justify-center text-token-grey-500">
+        No pie data
+      </div>
+    );
+  }
+
   return (
-    <ResponsivePie
-      data={safeData}
-      theme={{
-        axis: {
-          domain: { line: { stroke: colors.grey[100] } },
-          legend: { text: { fill: colors.grey[100] } },
-          ticks: {
-            line: { stroke: colors.grey[100], strokeWidth: 1 },
-            text: { fill: colors.grey[100] },
-          },
-        },
-        legends: { text: { fill: colors.grey[100] } },
-      }}
-      margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-      innerRadius={0.5}
-      padAngle={0.7}
-      cornerRadius={3}
-      activeOuterRadiusOffset={8}
-      borderColor={{ from: "color", modifiers: [["darker", 0.2]] }}
-      arcLinkLabelsSkipAngle={10}
-      arcLinkLabelsTextColor={colors.grey[100]}
-      arcLinkLabelsThickness={2}
-      arcLinkLabelsColor={{ from: "color" }}
-      enableArcLabels={false}
-      arcLabelsRadiusOffset={0.4}
-      arcLabelsSkipAngle={7}
-      arcLabelsTextColor={{ from: "color", modifiers: [["darker", 2]] }}
-      defs={[
-        {
-          id: "dots",
-          type: "patternDots",
-          background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
-          size: 4,
-          padding: 1,
-          stagger: true,
-        },
-        {
-          id: "lines",
-          type: "patternLines",
-          background: "inherit",
-          color: "rgba(255, 255, 255, 0.3)",
-          rotation: -45,
-          lineWidth: 6,
-          spacing: 10,
-        },
-      ]}
-      legends={[
-        {
-          anchor: "bottom",
-          direction: "row",
-          justify: false,
-          translateX: 0,
-          translateY: 56,
-          itemsSpacing: 0,
-          itemWidth: 100,
-          itemHeight: 18,
-          itemTextColor: "#999",
-          itemDirection: "left-to-right",
-          itemOpacity: 1,
-          symbolSize: 18,
-          symbolShape: "circle",
-          effects: [{ on: "hover", style: { itemTextColor: "#000" } }],
-        },
-      ]}
-    />
+    <ResponsiveContainer width="100%" height="100%">
+      <RechartsPieChart>
+        <Pie
+          data={data}
+          cx="50%"
+          cy="50%"
+          innerRadius={60}
+          outerRadius={80}
+          paddingAngle={5}
+          dataKey="value"
+          nameKey="label"
+        >
+          {data.map((_, i) => (
+            <Cell key={i} fill={COLORS[i % COLORS.length]} />
+          ))}
+        </Pie>
+        <Tooltip
+          contentStyle={{ backgroundColor: "#1f2a40", border: "none", borderRadius: 8 }}
+        />
+        <Legend />
+      </RechartsPieChart>
+    </ResponsiveContainer>
   );
 }

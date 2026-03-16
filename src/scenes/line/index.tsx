@@ -16,7 +16,7 @@ export default function Line() {
   const [sidebarTransitioning, setSidebarTransitioning] = useState(false);
 
   useEffect(() => {
-    const sidebar = document.querySelector(".pro-sidebar");
+    const sidebar = document.querySelector(".app-sidebar");
     let transitionTimeout: ReturnType<typeof setTimeout>;
 
     function checkSize() {

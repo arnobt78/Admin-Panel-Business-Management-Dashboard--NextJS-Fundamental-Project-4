@@ -62,7 +62,7 @@ export default function Dashboard() {
   useEffect(() => {
     const checkSize = (
       ref: React.RefObject<HTMLDivElement>,
-      setReady: (v: boolean) => void
+      setReady: (v: boolean) => void,
     ) => {
       if (ref.current) {
         const { width, height } = ref.current.getBoundingClientRect();
@@ -80,7 +80,7 @@ export default function Dashboard() {
   }, [isCollapsed]);
 
   return (
-    <div className="min-h-full p-5">
+    <div className="min-h-full p-4">
       <motion.div
         className="mb-8 rounded-2xl border border-token-primary-600 bg-token-primary-400/80 p-6 backdrop-blur-sm"
         initial={{ opacity: 0, y: 16 }}
@@ -94,14 +94,17 @@ export default function Dashboard() {
           Welcome to your dashboard
         </h1>
         <p className="mt-2 max-w-2xl text-token-grey-300">
-          This educational project demonstrates core React concepts: reusable components, Context API for theme and sidebar state, custom hooks, TypeScript types, and Tailwind CSS. Explore the sidebar to see charts, forms, and data tables.
+          This educational project demonstrates core React concepts: reusable
+          components, Context API for theme and sidebar state, custom hooks,
+          TypeScript types, and Tailwind CSS. Explore the sidebar to see charts,
+          forms, and data tables.
         </p>
       </motion.div>
 
       <Box className="flex justify-between items-center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
         <Box>
-          <Button className="bg-token-blueAccent-700 text-token-grey-100 text-sm font-bold py-2.5 px-5">
+          <Button className="bg-token-blueAccent-700 text-token-grey-100 text-sm font-bold py-2.5 px-4">
             <DownloadOutlinedIcon className="mr-2.5" />
             Download Reports
           </Button>
@@ -109,55 +112,84 @@ export default function Dashboard() {
       </Box>
 
       <motion.div
-        className="grid grid-cols-12 auto-rows-[140px] gap-5"
+        className="grid grid-cols-12 auto-rows-[140px] gap-4"
         variants={stagger}
         initial="initial"
         animate="animate"
       >
-        <motion.div className="col-span-3 flex items-center justify-center bg-token-primary-400 rounded-xl" variants={fadeInUp}>
+        <motion.div
+          className="col-span-3 flex items-center justify-center bg-token-primary-400 rounded-xl"
+          variants={fadeInUp}
+        >
           <StatBox
             title="12,361"
             subtitle="Emails Sent"
             progress="0.75"
             increase="+14%"
-            icon={<EmailIcon className="text-token-greenAccent-600 text-[26px]" />}
+            icon={
+              <EmailIcon className="text-token-greenAccent-600 text-[26px]" />
+            }
           />
         </motion.div>
-        <motion.div className="col-span-3 flex items-center justify-center bg-token-primary-400 rounded-xl" variants={fadeInUp}>
+        <motion.div
+          className="col-span-3 flex items-center justify-center bg-token-primary-400 rounded-xl"
+          variants={fadeInUp}
+        >
           <StatBox
             title="431,225"
             subtitle="Sales Obtained"
             progress="0.50"
             increase="+21%"
-            icon={<PointOfSaleIcon className="text-token-greenAccent-600 text-[26px]" />}
+            icon={
+              <PointOfSaleIcon className="text-token-greenAccent-600 text-[26px]" />
+            }
           />
         </motion.div>
-        <motion.div className="col-span-3 flex items-center justify-center bg-token-primary-400 rounded-xl" variants={fadeInUp}>
+        <motion.div
+          className="col-span-3 flex items-center justify-center bg-token-primary-400 rounded-xl"
+          variants={fadeInUp}
+        >
           <StatBox
             title="32,441"
             subtitle="New Clients"
             progress="0.30"
             increase="+5%"
-            icon={<PersonAddIcon className="text-token-greenAccent-600 text-[26px]" />}
+            icon={
+              <PersonAddIcon className="text-token-greenAccent-600 text-[26px]" />
+            }
           />
         </motion.div>
-        <motion.div className="col-span-3 flex items-center justify-center bg-token-primary-400 rounded-xl" variants={fadeInUp}>
+        <motion.div
+          className="col-span-3 flex items-center justify-center bg-token-primary-400 rounded-xl"
+          variants={fadeInUp}
+        >
           <StatBox
             title="1,325,134"
             subtitle="Traffic Received"
             progress="0.80"
             increase="+43%"
-            icon={<TrafficIcon className="text-token-greenAccent-600 text-[26px]" />}
+            icon={
+              <TrafficIcon className="text-token-greenAccent-600 text-[26px]" />
+            }
           />
         </motion.div>
 
-        <motion.div className="col-span-8 row-span-2 bg-token-primary-400 rounded-xl overflow-hidden" variants={fadeInUp}>
+        <motion.div
+          className="col-span-8 row-span-2 bg-token-primary-400 rounded-xl overflow-hidden"
+          variants={fadeInUp}
+        >
           <Box className="mt-6 px-[30px] flex justify-between items-center">
             <Box>
-              <Typography variant="h5" className="font-semibold text-token-grey-100">
+              <Typography
+                variant="h5"
+                className="font-semibold text-token-grey-100"
+              >
                 Revenue Generated
               </Typography>
-              <Typography variant="h3" className="font-bold text-token-greenAccent-500">
+              <Typography
+                variant="h3"
+                className="font-bold text-token-greenAccent-500"
+              >
                 $59,342.32
               </Typography>
             </Box>
@@ -176,9 +208,15 @@ export default function Dashboard() {
             )}
           </Box>
         </motion.div>
-        <motion.div className="col-span-4 row-span-2 bg-token-primary-400 overflow-auto rounded-xl" variants={fadeInUp}>
+        <motion.div
+          className="col-span-4 row-span-2 bg-token-primary-400 overflow-auto rounded-xl"
+          variants={fadeInUp}
+        >
           <Box className="flex justify-between items-center border-b-4 border-token-primary-500 p-4">
-            <Typography variant="h5" className="font-semibold text-token-grey-100">
+            <Typography
+              variant="h5"
+              className="font-semibold text-token-grey-100"
+            >
               Recent Transactions
             </Typography>
           </Box>
@@ -188,7 +226,10 @@ export default function Dashboard() {
               className="flex justify-between items-center border-b-4 border-token-primary-500 p-4"
             >
               <Box>
-                <Typography variant="h5" className="font-semibold text-token-greenAccent-500">
+                <Typography
+                  variant="h5"
+                  className="font-semibold text-token-greenAccent-500"
+                >
                   {transaction.txId}
                 </Typography>
                 <Typography className="text-token-grey-100">
@@ -203,20 +244,32 @@ export default function Dashboard() {
           ))}
         </motion.div>
 
-        <motion.div className="col-span-4 row-span-2 bg-token-primary-400 p-[30px] rounded-xl" variants={fadeInUp}>
+        <motion.div
+          className="col-span-4 row-span-2 bg-token-primary-400 p-[30px] rounded-xl"
+          variants={fadeInUp}
+        >
           <Typography variant="h5" className="font-semibold">
             Campaign
           </Typography>
           <Box className="flex flex-col items-center mt-6">
             <ProgressCircle size="125" />
-            <Typography variant="h5" className="text-token-greenAccent-500 mt-4">
+            <Typography
+              variant="h5"
+              className="text-token-greenAccent-500 mt-4"
+            >
               $48,352 revenue generated
             </Typography>
             <Typography>Includes extra misc expenditures and costs</Typography>
           </Box>
         </motion.div>
-        <motion.div className="col-span-4 row-span-2 bg-token-primary-400 rounded-xl" variants={fadeInUp}>
-          <Typography variant="h5" className="font-semibold pt-[30px] px-[30px]">
+        <motion.div
+          className="col-span-4 row-span-2 bg-token-primary-400 rounded-xl"
+          variants={fadeInUp}
+        >
+          <Typography
+            variant="h5"
+            className="font-semibold pt-[30px] px-[30px]"
+          >
             Sales Quantity
           </Typography>
           <Box className="h-[250px] -mt-5" ref={barRef}>
@@ -228,7 +281,10 @@ export default function Dashboard() {
             )}
           </Box>
         </motion.div>
-        <motion.div className="col-span-4 row-span-2 p-[30px] bg-token-primary-400 rounded-xl" variants={fadeInUp}>
+        <motion.div
+          className="col-span-4 row-span-2 p-[30px] bg-token-primary-400 rounded-xl"
+          variants={fadeInUp}
+        >
           <Typography variant="h5" className="font-semibold mb-4">
             Geography Based Traffic
           </Typography>
