@@ -81,28 +81,9 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-full p-4">
-      <motion.div
-        className="mb-8 rounded-2xl border border-token-primary-600 bg-token-primary-400/80 p-6 backdrop-blur-sm"
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <p className="text-sm font-medium uppercase tracking-wider text-token-greenAccent-500">
-          React fundamentals · Learning project
-        </p>
-        <h1 className="mt-2 font-sans text-2xl font-bold tracking-tight text-token-grey-100 md:text-3xl">
-          Welcome to your dashboard
-        </h1>
-        <p className="mt-2 max-w-2xl text-token-grey-300">
-          This educational project demonstrates core React concepts: reusable
-          components, Context API for theme and sidebar state, custom hooks,
-          TypeScript types, and Tailwind CSS. Explore the sidebar to see charts,
-          forms, and data tables.
-        </p>
-      </motion.div>
-
       <Box className="flex justify-between items-center">
         <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
+
         <Box>
           <Button className="bg-token-blueAccent-700 text-token-grey-100 text-sm font-bold py-2.5 px-4">
             <DownloadOutlinedIcon className="mr-2.5" />
