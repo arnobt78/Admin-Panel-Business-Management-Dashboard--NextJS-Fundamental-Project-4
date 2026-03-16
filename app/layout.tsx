@@ -23,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${plusJakarta.variable} h-full w-full font-sans antialiased`} suppressHydrationWarning>
-      <body className="h-full w-full font-sans">
+      <body className="h-full w-full font-sans" suppressHydrationWarning>
         <Providers>{children}</Providers>
       </body>
     </html>

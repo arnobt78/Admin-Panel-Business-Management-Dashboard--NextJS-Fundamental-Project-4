@@ -5,7 +5,7 @@ import { Topbar } from "@/scenes/global/Topbar";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex h-full w-full">
+    <div className="flex h-full w-full" suppressHydrationWarning>
       <Sidebar />
       <main className="flex min-h-0 flex-1 flex-col">
         <Topbar />
